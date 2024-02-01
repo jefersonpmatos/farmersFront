@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { isValidCPFOrCNPJ } from "@/lib/utils";
 import { MultiSelect } from "@/components/multiSelect";
 import { Farmer } from "@/App";
-import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -86,7 +85,6 @@ interface Register {
 
 export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
 
   const defaultValues = {
     name: farmerToEdit?.name || "",
@@ -105,7 +103,6 @@ export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setLoading(true);
     if (!farmerToEdit) {
       fetch("https://farmers-api-2nhh.vercel.app/farmer/register", {
         method: "POST",
@@ -115,7 +112,6 @@ export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
-          setLoading(false);
           toast({
             title: "Sucesso!",
             description: "Agricultor cadastrado",
@@ -128,7 +124,6 @@ export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
             title: "Ops!",
             description: "Tente novamente mais tarde",
           });
-          setLoading(false);
         });
     } else {
       fetch(`https://farmers-api-2nhh.vercel.app/farmer/${farmerToEdit.id}`, {
@@ -139,7 +134,6 @@ export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
-          setLoading(false);
           toast({
             title: "Sucesso!",
             description: "Dados atualizados",
@@ -152,7 +146,6 @@ export const Register: React.FC<Register> = ({ farmerToEdit, refetch }) => {
             title: "Ops!",
             description: "Tente novamente mais tarde",
           });
-          setLoading(false);
         });
     }
   };
